@@ -1,94 +1,197 @@
-
 # Word2Vec Implementation in Pure NumPy
 
-This project implements the **core training loop of Word2Vec** using **pure NumPy**, without relying on machine learning frameworks such as PyTorch or TensorFlow. The goal is to explicitly implement the optimization procedure behind Word2Vec, including the **forward pass, loss computation, gradient calculation, and parameter updates**.
+This project implements the **core training loop of Word2Vec** using **pure NumPy**, without relying on machine learning frameworks such as PyTorch or TensorFlow.
 
-Word2Vec is a neural embedding method that learns **dense vector representations of words** from text corpora. The central idea is that **words appearing in similar contexts tend to have similar meanings**. During training, the model learns embeddings where semantically related words become close in vector space.
+The goal of this implementation is educational: to explicitly implement the optimization procedure used in Word2Vec, including:
 
-This implementation uses the **Skip-Gram architecture with Negative Sampling**, a commonly used Word2Vec variant. In the skip-gram model, the network learns to predict surrounding context words given a center word. Instead of computing a full softmax over the entire vocabulary, **negative sampling** is used to efficiently approximate the training objective by distinguishing real word-context pairs from randomly sampled negative examples.
+* forward pass
+* loss computation
+* gradient calculation
+* parameter updates
 
----
-
-# Implementation Overview
-
-The implementation follows the standard Word2Vec pipeline:
-
-### 1. Text preprocessing
-
-The input corpus is tokenized and normalized. A vocabulary of unique words is constructed, and each word is mapped to an integer ID.
-
-### 2. Training pair generation
-
-Using a configurable context window, the corpus is converted into **skip-gram training pairs** of the form:
-
-```
-(center_word, context_word)
-```
-
-These pairs represent local contextual relationships in the text.
-
-### 3. Model initialization
-
-Two embedding matrices are initialized:
-
-* **W_in** — input embeddings for center words
-* **W_out** — output embeddings for context words
-
-Each row corresponds to the vector representation of a word.
-
-### 4. Core training loop
-
-For each training pair:
-
-1. A **positive pair** (real context) is used.
-2. Several **negative samples** are drawn from the vocabulary.
-3. The model computes similarity scores between word embeddings.
-4. A **negative sampling loss** is calculated.
-5. Gradients are derived manually.
-6. Parameters are updated using **stochastic gradient descent (SGD)**.
-
-The loss decreases during training, indicating that the embeddings improve.
+The model implemented is **Skip-Gram with Negative Sampling (SGNS)**.
 
 ---
 
-# Evaluation
+# Project Goals
 
-After training, the learned embeddings are evaluated qualitatively using:
+The objective of this project is to demonstrate a full understanding of how Word2Vec works internally by implementing:
 
-### Nearest neighbour queries
+* vocabulary construction
+* skip-gram training pair generation
+* negative sampling
+* embedding training with stochastic gradient descent
+* cosine similarity evaluation
 
-Words with similar embeddings are retrieved using cosine similarity.
-
-Example:
-
-```
-pycharm => intellij, webstorm, clion
-```
-
-### Analogy tests
-
-Vector arithmetic demonstrates semantic relationships:
-
-```
-pycharm - python + java = intellij
-```
-
-These tests show that the model captures contextual relationships between words.
-
+All computations are implemented manually using **NumPy vector operations**.
 
 ---
 
-# Project Structure
+# Repository Structure
 
 ```
-src/
-    dataset.py    # Text preprocessing and training pair generation
-    model.py      # Word2Vec model and training logic
-    utils.py      # Tokenization and mathematical utilities
-
-train.py          # Training script and evaluation
-data/
-    sample_corpus.txt
+word2vec/
+│
+├── src/
+│   ├── dataset.py      # Text preprocessing and skip-gram pair generation
+│   ├── model.py        # Word2Vec model implementation
+│   └── utils.py        # Utility functions (sampling, similarity, etc.)
+│
+├── main.py             # Training script
+├── sample_corpus.txt   # Example training corpus
+├── README.md
+└── requirements.txt
 ```
 
+---
 
+# Word2Vec Overview
+
+Word2Vec learns **dense vector representations of words** such that words appearing in similar contexts have similar embeddings.
+
+This implementation uses the **Skip-Gram architecture**, which predicts surrounding context words given a center word.
+
+Example training pair:
+
+```
+Sentence: "IDE improves developer productivity"
+
+Center word: developer  
+Context words: improves, productivity
+```
+
+The model learns embeddings that maximize the probability of observing context words given the center word.
+
+---
+
+# Negative Sampling
+
+Computing a full softmax over the entire vocabulary is expensive.
+
+Instead, **negative sampling** approximates the objective by training the model to:
+
+* increase similarity between real word-context pairs
+* decrease similarity between randomly sampled word pairs
+
+The loss for one training pair is:
+
+```
+L = -log f(v_c * v_o) - Sigma( log( f(-v_c · v_k)))
+```
+
+Where:
+
+* (v_c) = center word embedding
+* (v_o) = true context embedding
+* (v_k) = negative sample embeddings
+* f = sigmoid function
+
+This implementation uses the **standard unigram distribution raised to the power of 0.75** for sampling negative examples.
+
+---
+
+# Training Procedure
+
+The training loop performs the following steps:
+
+1. Build vocabulary from the corpus
+2. Generate skip-gram pairs using a sliding window
+3. Sample negative examples
+4. Compute the loss
+5. Compute gradients manually
+6. Update parameters using stochastic gradient descent
+
+Two embedding matrices are trained:
+
+```
+W_in   : center word embeddings
+W_out  : context word embeddings
+```
+
+After training, `W_in` contains the final word vectors.
+
+---
+
+# How to Run
+
+Install dependencies:
+
+```
+pip install -r requirements.txt
+```
+
+Run training:
+
+```
+python main.py
+```
+
+The script will:
+
+1. Load the corpus
+2. Build the vocabulary
+3. Train the Word2Vec model
+4. Print example similarity queries
+
+Example output:
+
+```
+Training started...
+Epoch 1 | Loss: 3.42
+Epoch 2 | Loss: 2.91
+Epoch 3 | Loss: 2.37
+
+Nearest neighbors for "python":
+developer
+language
+programming
+numpy
+```
+
+---
+
+# Example Corpus
+
+The repository includes a small sample corpus (`sample_corpus.txt`) used for demonstration purposes.
+
+The corpus is intentionally small to make training fast and the code easy to understand.
+
+For more meaningful embeddings, the model can be trained on larger datasets such as:
+
+* Wikipedia text
+* OpenSubtitles
+* news datasets
+* large book corpora
+
+---
+
+# Limitations
+
+This implementation prioritizes **clarity over performance**.
+
+It intentionally omits several optimizations used in production Word2Vec implementations:
+
+* mini-batch training
+* subsampling of frequent words
+* learning rate decay
+* hierarchical softmax
+* vectorized negative sampling
+* multi-threaded training
+
+These features could significantly improve training speed and embedding quality.
+
+---
+
+# Possible Improvements
+
+Potential extensions include:
+
+* implementing CBOW architecture
+* adding subsampling of frequent words
+* implementing hierarchical softmax
+* supporting mini-batch training
+* training on a large corpus
+* visualizing embeddings with t-SNE
+
+ **diagram explaining Skip-Gram training**
+2. a **10-line section explaining the gradient derivation** (which interviewers often ask about).
