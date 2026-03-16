@@ -91,6 +91,4 @@ data/
     sample_corpus.txt
 ```
 
-=
-
 
