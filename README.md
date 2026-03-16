@@ -27,24 +27,6 @@ All computations are implemented manually using **NumPy vector operations**.
 
 ---
 
-# Repository Structure
-
-```
-word2vec/
-│
-├── src/
-│   ├── dataset.py      # Text preprocessing and skip-gram pair generation
-│   ├── model.py        # Word2Vec model implementation
-│   └── utils.py        # Utility functions (sampling, similarity, etc.)
-│
-├── main.py             # Training script
-├── sample_corpus.txt   # Example training corpus
-├── README.md
-└── requirements.txt
-```
-
----
-
 # Word2Vec Overview
 
 Word2Vec learns **dense vector representations of words** such that words appearing in similar contexts have similar embeddings.
@@ -117,7 +99,7 @@ After training, `W_in` contains the final word vectors.
 Install dependencies:
 
 ```
-pip install -r requirements.txt
+pip install numpy
 ```
 
 Run training:
