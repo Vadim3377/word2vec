@@ -71,6 +71,33 @@ Where:
 This implementation uses the **standard unigram distribution raised to the power of 0.75** for sampling negative examples.
 
 ---
+## Gradient Intuition
+
+For the positive pair (center word (c), context word (o)) the gradient is derived from:
+
+[
+-\log f(v_c \cdot v_o)
+]
+
+The derivative with respect to the score (s = v_c \cdot v_o) becomes:
+
+[
+f(s) - 1
+]
+
+For negative samples the loss term is:
+
+[
+-\log f(-v_c \cdot v_k)
+]
+
+Which produces gradient:
+
+[
+f(v_c \cdot v_k)
+]
+
+---
 
 # Training Procedure
 
@@ -174,3 +201,4 @@ Potential extensions include:
 * supporting mini-batch training
 * training on a large corpus
 * visualizing embeddings with t-SNE
+
