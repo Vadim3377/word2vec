@@ -1,0 +1,40 @@
+jetbrains develops powerful developer tools
+jetbrains builds software for programmers
+jetbrains creates intelligent coding tools
+
+pycharm is a python ide
+intellij is a java ide
+webstorm is a javascript ide
+clion is a cplusplus ide
+
+pycharm helps python developers
+intellij helps java developers
+webstorm helps web developers
+clion helps cplusplus developers
+
+developers write code in pycharm
+developers write code in intellij
+developers write code in webstorm
+developers write code in clion
+
+python developers use pycharm
+java developers use intellij
+web developers use webstorm
+cplusplus developers use clion
+
+jetbrains tools improve developer productivity
+jetbrains ide tools help developers write code
+jetbrains creates modern ide software
+
+programmers write software
+developers build applications
+engineers write code
+
+python is a programming language
+java is a programming language
+javascript is a programming language
+cplusplus is a programming language
+
+software engineers write programs
+software developers build applications
+programmers create software
