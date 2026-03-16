@@ -174,6 +174,3 @@ Potential extensions include:
 * supporting mini-batch training
 * training on a large corpus
 * visualizing embeddings with t-SNE
-
- **diagram explaining Skip-Gram training**
-2. a **10-line section explaining the gradient derivation** (which interviewers often ask about).
