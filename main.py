@@ -61,12 +61,6 @@ def show_analogy(model, dataset, w1, w2, w3, top_k=5):
     """
     Display the result of a word analogy query.
 
-    This function evaluates analogies of the form:
-
-        w1 - w2 + w3 ≈ ?
-
-    For example:
-        king - man + woman ≈ queen
 
     Parameters
     ----------
@@ -112,13 +106,13 @@ def main():
     Train the Word2Vec model and run basic evaluation.
 
     This function executes the full training pipeline:
-    1. Load the corpus.
-    2. Build the vocabulary and encode the text.
-    3. Generate skip-gram training pairs.
-    4. Initialize the Word2Vec model.
-    5. Train the model for a fixed number of epochs.
-    6. Print sanity checks.
-    7. Evaluate the embeddings using nearest-neighbour and analogy tests.
+    1) Load the corpus.
+    2) Build the vocabulary and encode the text.
+    3) Generate skip-gram training pairs.
+    4) Initialize the Word2Vec model.
+    5) Train the model for a fixed number of epochs.
+    6) Print sanity checks.
+    7) Evaluate the embeddings using nearest-neighbour and analogy tests.
     """
     # Load raw training text
     text = load_text()
